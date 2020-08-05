@@ -16,8 +16,8 @@ func (c *Collect) parseNameNodeRetryCache(ch chan<- prometheus.Metric, b interfa
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "nameNode_retry_cache", metricsName),
-					"hadoop nameNode retry cache "+describeName,
+					prometheus.BuildFQName(namespace, "namenode_retry_cache", metricsName),
+					"hadoop namenode retry cache "+describeName,
 					[]string{"role", "host"},
 					nil,
 				),
