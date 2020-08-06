@@ -37,8 +37,6 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 			"SyncsNumOps", "SyncsAvgTime",
 			"StorageBlockReportNumOps", "StorageBlockReportAvgTime",
 			"CacheReportNumOps", "CacheReportAvgTime",
-			"GenerateEDEKTimeNumOps", "GenerateEDEKTimeAvgTime",
-			"WarmUpEDEKTimeNumOps", "WarmUpEDEKTimeAvgTime",
 			"ResourceCheckTimeNumOps", "ResourceCheckTimeAvgTime",
 
 			"EditLogTailTimeNumOps", "EditLogTailTimeAvgTime",
@@ -53,10 +51,59 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 				prometheus.NewDesc(
 					prometheus.BuildFQName(namespace, "namenode_activity", metricsName),
 					"hadoop namenode activity "+describeName,
-					[]string{
-						"role",
-						"host",
-					},
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "GenerateEDEKTimeNumOps":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "namenode_activity", "generate_edek_time_num_ops"),
+					"hadoop namenode activity generate edek time num ops",
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "GenerateEDEKTimeAvgTime":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "namenode_activity", "generate_edek_time_avg_time"),
+					"hadoop namenode activity generate edek time avg time",
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "WarmUpEDEKTimeNumOps":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "namenode_activity", "warm_up_edek_time_num_ops"),
+					"hadoop namenode activity warm up edek time num ops",
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "WarmUpEDEKTimeAvgTime":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "namenode_activity", "warm_up_edek_time_avg_time"),
+					"hadoop namenode activity warm up edek time avg time",
+					[]string{"role", "host"},
 					nil,
 				),
 				prometheus.GaugeValue,

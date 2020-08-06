@@ -49,6 +49,7 @@ func (c *Collect) CollectMetrics() error {
 
 	req, err := http.NewRequest("GET", c.Uri, nil)
 	if err != nil {
+		c.parseHadoopStatus(CollectStream, err)
 		return err
 	}
 
@@ -56,25 +57,29 @@ func (c *Collect) CollectMetrics() error {
 	if resp != nil {
 		defer func() {
 			if err := resp.Body.Close(); err != nil {
-				log.Warn(err.Error())
+				log.Warn("resp.Body.Close() failed !", zap.Error(err))
 			}
 		}()
 	}
 	if err != nil {
+		c.parseHadoopStatus(CollectStream, err)
 		return err
 	}
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		log.Warn("解析 Hadoop Json 失败", zap.Error(err))
+		c.parseHadoopStatus(CollectStream, err)
 		return err
 	}
 
 	beans := result["beans"].([]interface{})
-
 	if common.AssertInterfaceIsNil(beans) {
-		return errors.New("interface beans is nil")
+		err := errors.New("interface beans is nil")
+		c.parseHadoopStatus(CollectStream, err)
+		return err
 	}
+
+	c.parseHadoopStatus(CollectStream, nil)
 
 	for _, b := range beans {
 		if common.AssertInterfaceIsNil(b) {

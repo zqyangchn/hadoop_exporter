@@ -42,8 +42,6 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 			"FlushNanosNumOps", "FlushNanosAvgTime", "FsyncNanosNumOps", "FsyncNanosAvgTime",
 			"SendDataPacketBlockedOnNetworkNanosNumOps", "SendDataPacketBlockedOnNetworkNanosAvgTime",
 			"SendDataPacketTransferNanosNumOps", "SendDataPacketTransferNanosAvgTime",
-			"BlocksInPendingIBR", "BlocksReceivingInPendingIBR",
-			"BlocksReceivedInPendingIBR", "BlocksDeletedInPendingIBR",
 			"EcReconstructionTasks", "EcFailedReconstructionTasks",
 			"EcDecodingTimeNanos", "EcReconstructionBytesRead",
 			"EcReconstructionBytesWritten", "EcReconstructionRemoteBytesRead",
@@ -53,6 +51,58 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 				prometheus.NewDesc(
 					prometheus.BuildFQName(namespace, "datanode_activity", metricsName),
 					"hadoop datanode activity "+describeName,
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "BlocksInPendingIBR":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_in_pending_ibr"),
+					"hadoop datanode activity blocks in pending ibr",
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "BlocksReceivingInPendingIBR":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_receiving_in_pending_ibr"),
+					"hadoop datanode activity blocks receiving in pending ibr",
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "BlocksReceivedInPendingIBR":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_received_in_pending_ibr"),
+					"hadoop datanode activity blocks received in pending ibr",
+					[]string{"role", "host"},
+					nil,
+				),
+				prometheus.GaugeValue,
+				value.(float64),
+				c.Role,
+				c.Hostname,
+			)
+		case "BlocksDeletedInPendingIBR":
+			ch <- prometheus.MustNewConstMetric(
+				prometheus.NewDesc(
+					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_deleted_in_pending_ibr"),
+					"hadoop datanode activity blocks deleted in pending ibr",
 					[]string{"role", "host"},
 					nil,
 				),
