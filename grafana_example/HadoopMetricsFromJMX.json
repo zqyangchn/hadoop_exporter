@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1596698907000,
+  "iteration": 1596703842464,
   "links": [],
   "panels": [
     {
@@ -394,7 +394,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(hadoop_jvm_metrics_gc_count{host=~\"$Host\"}[30s])",
+          "expr": "rate(hadoop_jvm_metrics_gc_count{host=~\"$Host\"}[1m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -629,7 +629,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(hadoop_jvm_metrics_gc_time_millis{host=~\"$Host\"}[30s])",
+          "expr": "rate(hadoop_jvm_metrics_gc_time_millis{host=~\"$Host\"}[1m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -739,7 +739,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "hadoop_jvm_metrics_mem_non_heap_used_m",
+          "expr": "hadoop_jvm_metrics_mem_non_heap_used_m{host=~\"$Host\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -849,7 +849,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "hadoop_jvm_metrics_mem_heap_used_m/hadoop_jvm_metrics_mem_heap_max_m",
+          "expr": "hadoop_jvm_metrics_mem_heap_used_m/hadoop_jvm_metrics_mem_heap_max_m{host=~\"$Host\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -3621,5 +3621,5 @@
   "timezone": "",
   "title": "Hadoop Metrics From JMX",
   "uid": "V3Zy5WIGz",
-  "version": 34
+  "version": 37
 }
