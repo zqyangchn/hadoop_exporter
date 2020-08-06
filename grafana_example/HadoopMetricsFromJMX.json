@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1596703842464,
+  "iteration": 1596704991722,
   "links": [],
   "panels": [
     {
@@ -3280,7 +3280,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(hadoop_datanode_activity_send_data_packet_transfer_nanos_num_ops{host=~\"$Host\"}[30s])/30",
+          "expr": "rate(hadoop_datanode_activity_send_data_packet_transfer_nanos_num_ops{host=~\"$Host\"}[1m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -3388,7 +3388,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(hadoop_datanode_activity_packet_ack_round_trip_time_nanos_num_ops{host=~\"$Host\"}[30s])/30",
+          "expr": "rate(hadoop_datanode_activity_packet_ack_round_trip_time_nanos_num_ops{host=~\"$Host\"}[1m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -3496,7 +3496,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(hadoop_datanode_activity_send_data_packet_blocked_on_network_nanos_num_ops{host=~\"$Host\"}[30s])/30",
+          "expr": "rate(hadoop_datanode_activity_send_data_packet_blocked_on_network_nanos_num_ops{host=~\"$Host\"}[1m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -3621,5 +3621,5 @@
   "timezone": "",
   "title": "Hadoop Metrics From JMX",
   "uid": "V3Zy5WIGz",
-  "version": 37
+  "version": 38
 }
