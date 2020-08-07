@@ -1,4 +1,4 @@
-package hadoop
+package hbase
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
@@ -6,18 +6,20 @@ import (
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-// "java.lang:type=Threading"
-func (c *Collect) parseThreading(ch chan<- prometheus.Metric, b interface{}) {
+// "Hadoop:service=HBase,name=Master,sub=FileSystem"
+func (c *Collect) parseHbaseMasterFileSystem(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
 		switch key {
-		case "PeakThreadCount", "DaemonThreadCount", "ThreadCount", "TotalStartedThreadCount":
+		case
+			"HlogSplitTime_num_ops", "HlogSplitSize_num_ops",
+			"MetaHlogSplitTime_num_ops", "MetaHlogSplitSize_num_ops":
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "threading", metricsName),
-					"hadoop threading "+describeName,
+					prometheus.BuildFQName(namespace, "master_file_system", metricsName),
+					"hbase master file system "+describeName,
 					[]string{"role", "host"},
 					nil,
 				),

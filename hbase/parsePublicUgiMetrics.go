@@ -1,4 +1,4 @@
-package hadoop
+package hbase
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
@@ -6,18 +6,22 @@ import (
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-// "java.lang:type=ClassLoading"
-func (c *Collect) parseClassLoading(ch chan<- prometheus.Metric, b interface{}) {
+// "Hadoop:service=HBase,name=UgiMetrics"
+func (c *Collect) parseUgiMetrics(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
 		switch key {
-		case "LoadedClassCount", "UnloadedClassCount", "TotalLoadedClassCount":
+		case
+			"LoginSuccessNumOps", "LoginSuccessAvgTime",
+			"LoginFailureNumOps", "LoginFailureAvgTime",
+			"GetGroupsNumOps", "GetGroupsAvgTime",
+			"RenewalFailuresTotal", "RenewalFailures":
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "class_loading", metricsName),
-					"hadoop class loading "+describeName,
+					prometheus.BuildFQName(namespace, "ugi_metrics", metricsName),
+					"hbase ugi metrics "+describeName,
 					[]string{"role", "host"},
 					nil,
 				),

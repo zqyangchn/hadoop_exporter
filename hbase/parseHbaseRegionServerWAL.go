@@ -1,26 +1,28 @@
-package hadoop
+package hbase
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
+
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-// "java.lang:type=OperatingSystem"
-func (c *Collect) parseOperatingSystem(ch chan<- prometheus.Metric, b interface{}) {
+// "Hadoop:service=HBase,name=RegionServer,sub=WAL"
+func (c *Collect) parseHbaseRegionServerWAL(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
 		switch key {
 		case
-			"OpenFileDescriptorCount", "MaxFileDescriptorCount",
-			"FreePhysicalMemorySize", "TotalPhysicalMemorySize",
-			"SystemCpuLoad", "ProcessCpuLoad", "SystemLoadAverage",
-			"AvailableProcessors":
+			"appendCount", "slowAppendCount", "AppendSize_num_ops", "AppendTime_num_ops",
+			"SyncTime_num_ops",
+			"rollRequest",
+			"writtenBytes",
+			"lowReplicaRollRequest":
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "os", metricsName),
-					"hadoop os "+describeName,
+					prometheus.BuildFQName(namespace, "regionserver_wal", metricsName),
+					"hbase regionserver wal "+describeName,
 					[]string{"role", "host"},
 					nil,
 				),
