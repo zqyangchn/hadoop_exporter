@@ -12,7 +12,7 @@
     		web 监听 ip:port (default "0.0.0.0:18428")
 		-LogLevel string
     		日志级别: debug|info (default "debug")
-		  -LogOutput string
+		-LogOutput string
     		日志输出: stdout|file (default "stdout")
 		-LogOutputFile string
     		日志文件 (default "/var/log/hadoop_exporter")
