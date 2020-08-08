@@ -1,13 +1,15 @@
-package hadoop
+package generic
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
 // "java.lang:type=Threading"
-func (c *Collect) parseThreading(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseThreading(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -16,8 +18,8 @@ func (c *Collect) parseThreading(ch chan<- prometheus.Metric, b interface{}) {
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "threading", metricsName),
-					"hadoop threading "+describeName,
+					prometheus.BuildFQName(c.Namespace, "threading", metricsName),
+					strings.Join([]string{c.Namespace, "threading", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -31,7 +33,7 @@ func (c *Collect) parseThreading(ch chan<- prometheus.Metric, b interface{}) {
 }
 
 // "java.lang:type=OperatingSystem"
-func (c *Collect) parseOperatingSystem(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseOperatingSystem(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -44,8 +46,8 @@ func (c *Collect) parseOperatingSystem(ch chan<- prometheus.Metric, b interface{
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "os", metricsName),
-					"hadoop os "+describeName,
+					prometheus.BuildFQName(c.Namespace, "os", metricsName),
+					strings.Join([]string{c.Namespace, "os", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -59,7 +61,7 @@ func (c *Collect) parseOperatingSystem(ch chan<- prometheus.Metric, b interface{
 }
 
 // "java.lang:type=MemoryPool,name=Code Cache"
-func (c *Collect) parseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -71,8 +73,8 @@ func (c *Collect) parseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b interf
 					metricsName, describeName := common.ConversionToPrometheusFormat(k)
 					ch <- prometheus.MustNewConstMetric(
 						prometheus.NewDesc(
-							prometheus.BuildFQName(namespace, "memory_pool_code_cache", metricsName),
-							"hadoop memory pool code cache "+describeName,
+							prometheus.BuildFQName(c.Namespace, "memory_pool_code_cache", metricsName),
+							strings.Join([]string{c.Namespace, "memory pool code cache", describeName}, " "),
 							[]string{"role", "host"},
 							nil,
 						),
@@ -88,7 +90,7 @@ func (c *Collect) parseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b interf
 }
 
 // "java.lang:type=MemoryPool,name=Metaspace"
-func (c *Collect) parseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -100,8 +102,8 @@ func (c *Collect) parseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b interf
 					metricsName, describeName := common.ConversionToPrometheusFormat(k)
 					ch <- prometheus.MustNewConstMetric(
 						prometheus.NewDesc(
-							prometheus.BuildFQName(namespace, "memory_pool_metaspace", metricsName),
-							"hadoop memory pool metaspace "+describeName,
+							prometheus.BuildFQName(c.Namespace, "memory_pool_metaspace", metricsName),
+							strings.Join([]string{c.Namespace, "memory pool metaspace", describeName}, " "),
 							[]string{"role", "host"},
 							nil,
 						),
@@ -117,7 +119,7 @@ func (c *Collect) parseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b interf
 }
 
 // "java.lang:type=MemoryPool,name=Compressed Class Space"
-func (c *Collect) parseMemoryPoolCompressedClassSpace(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseMemoryPoolCompressedClassSpace(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -129,8 +131,8 @@ func (c *Collect) parseMemoryPoolCompressedClassSpace(ch chan<- prometheus.Metri
 					metricsName, describeName := common.ConversionToPrometheusFormat(k)
 					ch <- prometheus.MustNewConstMetric(
 						prometheus.NewDesc(
-							prometheus.BuildFQName(namespace, "memory_pool_compressed_class_space", metricsName),
-							"hadoop memory pool compressed class space "+describeName,
+							prometheus.BuildFQName(c.Namespace, "memory_pool_compressed_class_space", metricsName),
+							strings.Join([]string{c.Namespace, "memory pool compressed class space", describeName}, " "),
 							[]string{"role", "host"},
 							nil,
 						),
@@ -146,7 +148,7 @@ func (c *Collect) parseMemoryPoolCompressedClassSpace(ch chan<- prometheus.Metri
 }
 
 // "java.nio:type=BufferPool,name=direct"
-func (c *Collect) parseBufferPoolDirect(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseBufferPoolDirect(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -155,8 +157,8 @@ func (c *Collect) parseBufferPoolDirect(ch chan<- prometheus.Metric, b interface
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "buffer_pool_direct", metricsName),
-					"hadoop buffer pool direct "+describeName,
+					prometheus.BuildFQName(c.Namespace, "buffer_pool_direct", metricsName),
+					strings.Join([]string{c.Namespace, "buffer pool direct", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -170,7 +172,7 @@ func (c *Collect) parseBufferPoolDirect(ch chan<- prometheus.Metric, b interface
 }
 
 // "java.nio:type=BufferPool,name=mapped"
-func (c *Collect) parseBufferPoolMapped(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseBufferPoolMapped(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -179,8 +181,8 @@ func (c *Collect) parseBufferPoolMapped(ch chan<- prometheus.Metric, b interface
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "buffer_pool_mapped", metricsName),
-					"hadoop buffer pool mapped "+describeName,
+					prometheus.BuildFQName(c.Namespace, "buffer_pool_mapped", metricsName),
+					strings.Join([]string{c.Namespace, "hbase buffer pool mapped", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -194,7 +196,7 @@ func (c *Collect) parseBufferPoolMapped(ch chan<- prometheus.Metric, b interface
 }
 
 // "java.lang:type=ClassLoading"
-func (c *Collect) parseClassLoading(ch chan<- prometheus.Metric, b interface{}) {
+func (c *PublicCollect) ParseClassLoading(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -203,8 +205,8 @@ func (c *Collect) parseClassLoading(ch chan<- prometheus.Metric, b interface{}) 
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "class_loading", metricsName),
-					"hadoop class loading "+describeName,
+					prometheus.BuildFQName(c.Namespace, "class_loading", metricsName),
+					strings.Join([]string{c.Namespace, "class loading", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

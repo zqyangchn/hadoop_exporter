@@ -15,12 +15,13 @@ var log *zap.Logger
 func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *Collect {
 	c := new(Collect)
 
+	c.Namespace = "hbase"
 	c.Role = role
 	c.Uri = uri + "/jmx"
 
 	c.CollectInterval = 5 * time.Second
 
-	c.hc = &http.Client{
+	c.HC = &http.Client{
 		Transport: &http.Transport{
 			DialContext: (&net.Dialer{
 				Timeout:   5 * time.Second,
@@ -36,18 +37,19 @@ func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *C
 		Timeout: 2 * time.Second,
 	}
 
-	c.InitInformation()
+	c.initInformation()
 
 	if collectMetricsBackGround {
-		c.CollectMetricsBackGround()
+		c.CollectMetricsBackGround(c.parseExporterStatus, c.parseUniqueMetrics)
 	}
 
 	log = zapLog
+	c.Logger = zapLog
 
 	return c
 }
 
-func (c *Collect) InitInformation() {
+func (c *Collect) initInformation() {
 	/*
 		Get Hostname by jmx api
 		http://beta-devicegateway-node-01.morefun-internal.com:16010/jmx?qry=java.lang:type=Runtime
@@ -59,7 +61,7 @@ func (c *Collect) InitInformation() {
 		panic(err)
 	}
 
-	resp, err := c.hc.Do(req)
+	resp, err := c.HC.Do(req)
 	if resp != nil {
 		defer func() {
 			if err := resp.Body.Close(); err != nil {

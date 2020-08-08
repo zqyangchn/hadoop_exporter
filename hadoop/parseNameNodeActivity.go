@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -49,8 +51,8 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_activity", metricsName),
-					"hadoop namenode activity "+describeName,
+					prometheus.BuildFQName(c.Namespace, "namenode_activity", metricsName),
+					strings.Join([]string{c.Namespace, "namenode activity", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -62,7 +64,7 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "GenerateEDEKTimeNumOps":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_activity", "generate_edek_time_num_ops"),
+					prometheus.BuildFQName(c.Namespace, "namenode_activity", "generate_edek_time_num_ops"),
 					"hadoop namenode activity generate edek time num ops",
 					[]string{"role", "host"},
 					nil,
@@ -75,7 +77,7 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "GenerateEDEKTimeAvgTime":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_activity", "generate_edek_time_avg_time"),
+					prometheus.BuildFQName(c.Namespace, "namenode_activity", "generate_edek_time_avg_time"),
 					"hadoop namenode activity generate edek time avg time",
 					[]string{"role", "host"},
 					nil,
@@ -88,7 +90,7 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "WarmUpEDEKTimeNumOps":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_activity", "warm_up_edek_time_num_ops"),
+					prometheus.BuildFQName(c.Namespace, "namenode_activity", "warm_up_edek_time_num_ops"),
 					"hadoop namenode activity warm up edek time num ops",
 					[]string{"role", "host"},
 					nil,
@@ -101,7 +103,7 @@ func (c *Collect) parseNameNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "WarmUpEDEKTimeAvgTime":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_activity", "warm_up_edek_time_avg_time"),
+					prometheus.BuildFQName(c.Namespace, "namenode_activity", "warm_up_edek_time_avg_time"),
 					"hadoop namenode activity warm up edek time avg time",
 					[]string{"role", "host"},
 					nil,

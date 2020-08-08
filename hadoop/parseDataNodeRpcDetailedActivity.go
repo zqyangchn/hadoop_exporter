@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -18,9 +20,10 @@ func (c *Collect) parseDataNodeRpcDetailedActivity(ch chan<- prometheus.Metric, 
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "rpc_detailed_activity", metricsName),
-					"hadoop rpc detailed activity "+describeName,
+					prometheus.BuildFQName(c.Namespace, "rpc_detailed_activity", metricsName),
+					strings.Join([]string{c.Namespace, "rpc detailed activity", describeName}, " "),
 					[]string{"role", "host"},
+
 					nil,
 				),
 				prometheus.GaugeValue,

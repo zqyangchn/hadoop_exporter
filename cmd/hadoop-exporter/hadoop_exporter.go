@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"github.com/zqyangchn/hadoop_exporter/hadoop"
+
 	"net/http"
 	"time"
 
@@ -10,7 +12,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
-	"github.com/zqyangchn/hadoop_exporter/hadoop"
 )
 
 const (

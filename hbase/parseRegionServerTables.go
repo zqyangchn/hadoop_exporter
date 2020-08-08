@@ -1,7 +1,6 @@
 package hbase
 
 import (
-	"fmt"
 	"go.uber.org/zap"
 	"regexp"
 	"strings"
@@ -22,8 +21,8 @@ func (c *Collect) parseHbaseRegionServerTables(ch chan<- prometheus.Metric, b in
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "regionserver_tables", metricsName),
-					"hbase regionserver tables "+describeName,
+					prometheus.BuildFQName(c.Namespace, "regionserver_tables", metricsName),
+					strings.Join([]string{c.Namespace, "regionserver tables", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -46,8 +45,8 @@ func (c *Collect) parseHbaseRegionServerTables(ch chan<- prometheus.Metric, b in
 				metricsName, describeName := common.ConversionToPrometheusFormat(metrics)
 				ch <- prometheus.MustNewConstMetric(
 					prometheus.NewDesc(
-						prometheus.BuildFQName(namespace, "regionserver_tables", metricsName),
-						"hbase regionserver tables "+describeName,
+						prometheus.BuildFQName(c.Namespace, "regionserver_tables", metricsName),
+						strings.Join([]string{c.Namespace, "regionserver tables", describeName}, " "),
 						[]string{"role", "host", "namespace", "table"},
 						nil,
 					),
@@ -57,8 +56,10 @@ func (c *Collect) parseHbaseRegionServerTables(ch chan<- prometheus.Metric, b in
 				)
 			default:
 				log.Debug("parseHbaseRegionServerTables incomplete indicator collection",
-					zap.String("metrics", metrics))
-				fmt.Println(nameSpace, tableName, metrics)
+					zap.String("metrics", metrics),
+					zap.String("nameSpace", nameSpace),
+					zap.String("tableName", tableName),
+				)
 			}
 		}
 	}

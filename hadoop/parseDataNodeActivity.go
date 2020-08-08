@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -49,8 +51,8 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "datanode_activity", metricsName),
-					"hadoop datanode activity "+describeName,
+					prometheus.BuildFQName(c.Namespace, "datanode_activity", metricsName),
+					strings.Join([]string{c.Namespace, "datanode activity", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -62,7 +64,7 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "BlocksInPendingIBR":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_in_pending_ibr"),
+					prometheus.BuildFQName(c.Namespace, "datanode_activity", "blocks_in_pending_ibr"),
 					"hadoop datanode activity blocks in pending ibr",
 					[]string{"role", "host"},
 					nil,
@@ -75,7 +77,7 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "BlocksReceivingInPendingIBR":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_receiving_in_pending_ibr"),
+					prometheus.BuildFQName(c.Namespace, "datanode_activity", "blocks_receiving_in_pending_ibr"),
 					"hadoop datanode activity blocks receiving in pending ibr",
 					[]string{"role", "host"},
 					nil,
@@ -88,7 +90,7 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "BlocksReceivedInPendingIBR":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_received_in_pending_ibr"),
+					prometheus.BuildFQName(c.Namespace, "datanode_activity", "blocks_received_in_pending_ibr"),
 					"hadoop datanode activity blocks received in pending ibr",
 					[]string{"role", "host"},
 					nil,
@@ -101,7 +103,7 @@ func (c *Collect) parseDataNodeActivity(ch chan<- prometheus.Metric, b interface
 		case "BlocksDeletedInPendingIBR":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "datanode_activity", "blocks_deleted_in_pending_ibr"),
+					prometheus.BuildFQName(c.Namespace, "datanode_activity", "blocks_deleted_in_pending_ibr"),
 					"hadoop datanode activity blocks deleted in pending ibr",
 					[]string{"role", "host"},
 					nil,

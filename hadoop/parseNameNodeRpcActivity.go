@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -41,9 +43,9 @@ func (c *Collect) parseNameNodeRpcDetailedActivityForHDFSPort(ch chan<- promethe
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace,
+					prometheus.BuildFQName(c.Namespace,
 						"namenode_rpc_detailed_activity_for_hdfs_port", metricsName),
-					"hadoop namenode rpc detailed activity for hdfs port "+describeName,
+					strings.Join([]string{c.Namespace, "namenode rpc detailed activity for hdfs port", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -75,8 +77,8 @@ func (c *Collect) parseNameNodeRpcActivityForHDFSPort(ch chan<- prometheus.Metri
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_rpc_activity_for_hdfs_port", metricsName),
-					"hadoop namenode rpc activity for hdfs port "+describeName,
+					prometheus.BuildFQName(c.Namespace, "namenode_rpc_activity_for_hdfs_port", metricsName),
+					strings.Join([]string{c.Namespace, "namenode rpc activity for hdfs port", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -109,8 +111,8 @@ func (c *Collect) parseRpcActivityForServiceRPCPort(ch chan<- prometheus.Metric,
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "rpc_activity_for_service_rpc_port", metricsName),
-					"hadoop rpc activity for service rpc port"+describeName,
+					prometheus.BuildFQName(c.Namespace, "rpc_activity_for_service_rpc_port", metricsName),
+					strings.Join([]string{c.Namespace, "hadoop rpc activity for service rpc port", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -146,9 +148,9 @@ func (c *Collect) parseNameNodeRpcDetailedActivityForServiceRPCPort(ch chan<- pr
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace,
+					prometheus.BuildFQName(c.Namespace,
 						"namenode_rpc_detailed_activity_for_service_rpc_port", metricsName),
-					"hadoop namenode rpc detailed activity for service rpc port "+describeName,
+					strings.Join([]string{c.Namespace, "namenode rpc detailed activity for service rpc port", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

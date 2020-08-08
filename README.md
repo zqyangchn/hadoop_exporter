@@ -41,5 +41,5 @@
 	-Uri string
 		监控节点 URI (default "http://beta-devicegateway-node-01.morefun-internal.com:16030")
 ### Grafana  展示
-	grafana_example 目录含 grafana 的 json 文件(HadoopMetricsFromJMX.json)
+	.example-grafana 目录含 grafana 的 json 文件(HadoopMetricsFromJMX.json)
 	模板没有画出所有监控指标, hadoop_exporter 和 hbase_exporter 输出的指标可以自行添加

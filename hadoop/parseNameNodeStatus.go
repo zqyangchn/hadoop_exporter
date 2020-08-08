@@ -3,7 +3,7 @@ package hadoop
 import "github.com/prometheus/client_golang/prometheus"
 
 // "Hadoop:service=NameNode,name=NameNodeStatus"
-func (c *Collect) parseNameNodeNameNodeStatus(ch chan<- prometheus.Metric, b interface{}) {
+func (c *Collect) parseNameNodeStatus(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -20,7 +20,7 @@ func (c *Collect) parseNameNodeNameNodeStatus(ch chan<- prometheus.Metric, b int
 			}
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode", "status"),
+					prometheus.BuildFQName(c.Namespace, "namenode", "status"),
 					"hadoop namenode status. 0 --> standby, 1 --> active, 2 --> unknown",
 					[]string{"role", "host"},
 					nil,

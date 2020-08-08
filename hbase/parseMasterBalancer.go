@@ -1,6 +1,8 @@
 package hbase
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -16,8 +18,8 @@ func (c *Collect) parseHbaseMasterBalancer(ch chan<- prometheus.Metric, b interf
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_balancer", metricsName),
-					"hbase master balancer "+describeName,
+					prometheus.BuildFQName(c.Namespace, "master_balancer", metricsName),
+					strings.Join([]string{c.Namespace, "master balancer", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -30,7 +32,7 @@ func (c *Collect) parseHbaseMasterBalancer(ch chan<- prometheus.Metric, b interf
 			if value.(string) == "true" {
 				ch <- prometheus.MustNewConstMetric(
 					prometheus.NewDesc(
-						prometheus.BuildFQName(namespace, "master_balancer", "is_active_balancer"),
+						prometheus.BuildFQName(c.Namespace, "master_balancer", "is_active_balancer"),
 						"hbase master balancer is active balancer 1: active, 0: not active",
 						[]string{"role", "host"},
 						nil,
@@ -44,7 +46,7 @@ func (c *Collect) parseHbaseMasterBalancer(ch chan<- prometheus.Metric, b interf
 			}
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_balancer", "is_active_balancer"),
+					prometheus.BuildFQName(c.Namespace, "master_balancer", "is_active_balancer"),
 					"hbase master balancer is active balancer 1: active, 0: not active",
 					[]string{"role", "host"},
 					nil,

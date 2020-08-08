@@ -1,33 +1,16 @@
 package hadoop
 
 import (
-	"net/http"
-	"sync"
-	"time"
-
-	"github.com/prometheus/client_golang/prometheus"
+	"github.com/zqyangchn/hadoop_exporter/generic"
 )
 
-const (
-	namespace = "hadoop"
-)
-
-// Hadoop Collect 结构体
 type Collect struct {
-	sync.Mutex
+	generic.PublicCollect
 
-	Role     string
-	Hostname string
-
-	Uri string
-	hc  *http.Client
-
+	// hadoop namenode datanode
 	namenodeHDFSPort       string
 	namenodeServiceRPCPort string
 
 	datanodeRpcPort  string
 	datanodeDataPort string
-
-	CollectInterval    time.Duration
-	CollectMetricsSets []prometheus.Metric
 }

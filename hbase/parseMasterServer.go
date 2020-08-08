@@ -1,6 +1,8 @@
 package hbase
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -21,8 +23,8 @@ func (c *Collect) parseHbaseMasterServer(ch chan<- prometheus.Metric, b interfac
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_server", metricsName),
-					"hbase master server "+describeName,
+					prometheus.BuildFQName(c.Namespace, "master_server", metricsName),
+					strings.Join([]string{c.Namespace, "master server", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -35,7 +37,7 @@ func (c *Collect) parseHbaseMasterServer(ch chan<- prometheus.Metric, b interfac
 			if value.(string) == "true" {
 				ch <- prometheus.MustNewConstMetric(
 					prometheus.NewDesc(
-						prometheus.BuildFQName(namespace, "master_server", "is_active_master"),
+						prometheus.BuildFQName(c.Namespace, "master_server", "is_active_master"),
 						"hbase master server is active master 1: active, 0: not active",
 						[]string{"role", "host"},
 						nil,
@@ -49,7 +51,7 @@ func (c *Collect) parseHbaseMasterServer(ch chan<- prometheus.Metric, b interfac
 			}
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_server", "is_active_master"),
+					prometheus.BuildFQName(c.Namespace, "master_server", "is_active_master"),
 					"hbase master server is active master 1: active, 0: not active",
 					[]string{"role", "host"},
 					nil,

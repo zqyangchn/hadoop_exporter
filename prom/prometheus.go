@@ -1,8 +1,8 @@
-package hbase
+package prom
 
 import "github.com/prometheus/client_golang/prometheus"
 
-func (c *Collect) Collect(ch chan<- prometheus.Metric) {
+func (c *PrometheusCollect) Collect(ch chan<- prometheus.Metric) {
 	c.Lock()
 	defer c.Unlock()
 
@@ -11,7 +11,7 @@ func (c *Collect) Collect(ch chan<- prometheus.Metric) {
 	}
 }
 
-func (c *Collect) Describe(ch chan<- *prometheus.Desc) {
+func (c *PrometheusCollect) Describe(ch chan<- *prometheus.Desc) {
 	c.Lock()
 	defer c.Unlock()
 

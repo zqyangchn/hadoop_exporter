@@ -1,6 +1,8 @@
 package hbase
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -46,8 +48,8 @@ func (c *Collect) parseHbaseRegionserverServer(ch chan<- prometheus.Metric, b in
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "regionserver_server", metricsName),
-					"hbase regionserver server "+describeName,
+					prometheus.BuildFQName(c.Namespace, "regionserver_server", metricsName),
+					strings.Join([]string{c.Namespace, "regionserver server", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

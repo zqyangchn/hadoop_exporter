@@ -42,8 +42,8 @@ func (c *Collect) parseHbaseRegionServerRegions(ch chan<- prometheus.Metric, b i
 				metricsName, describeName := common.ConversionToPrometheusFormat(metrics)
 				ch <- prometheus.MustNewConstMetric(
 					prometheus.NewDesc(
-						prometheus.BuildFQName(namespace, "regionserver_regions", metricsName),
-						"hbase regionserver_regions "+describeName,
+						prometheus.BuildFQName(c.Namespace, "regionserver_regions", metricsName),
+						strings.Join([]string{c.Namespace, "regionserver_regions", describeName}, " "),
 						[]string{"role", "host", "namespace", "table", "region"},
 						nil,
 					),

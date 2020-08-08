@@ -1,14 +1,15 @@
-package hadoop
+package generic
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-// "Hadoop:service=NameNode,name=MetricsSystem,sub=Stats"
-// "Hadoop:service=DataNode,name=MetricsSystem,sub=Stats"
-func (c *Collect) parseMetricsSystemStats(ch chan<- prometheus.Metric, b interface{}) {
+// "Hadoop:service=HBase,name=MetricsSystem,sub=Stats"
+func (c *PublicCollect) ParseMetricsSystemStats(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -21,8 +22,8 @@ func (c *Collect) parseMetricsSystemStats(ch chan<- prometheus.Metric, b interfa
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "metrics_system_stats", metricsName),
-					"hadoop metrics system stats "+describeName,
+					prometheus.BuildFQName(c.Namespace, "metrics_system_stats", metricsName),
+					strings.Join([]string{c.Namespace, "metrics system stats", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

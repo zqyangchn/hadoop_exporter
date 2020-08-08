@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -22,8 +24,8 @@ func (c *Collect) parseNameNodeStartupProgress(ch chan<- prometheus.Metric, b in
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_startup_progress", metricsName),
-					"hadoop namenode startup progress "+describeName,
+					prometheus.BuildFQName(c.Namespace, "namenode_startup_progress", metricsName),
+					strings.Join([]string{c.Namespace, "namenode startup progress", describeName}, " "),
 					[]string{
 						"role",
 						"host",

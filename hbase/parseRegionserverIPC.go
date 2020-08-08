@@ -27,8 +27,8 @@ func (c *Collect) parseHbaseRegionserverIPC(ch chan<- prometheus.Metric, b inter
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "regionserver_ipc", metricsName),
-					"hbase regionserver ipc "+describeName,
+					prometheus.BuildFQName(c.Namespace, "regionserver_ipc", metricsName),
+					strings.Join([]string{c.Namespace, "regionserver ipc", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -47,8 +47,8 @@ func (c *Collect) parseHbaseRegionserverIPC(ch chan<- prometheus.Metric, b inter
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "regionserver_ipc", metricsName),
-					"hbase regionserver ipc "+describeName,
+					prometheus.BuildFQName(c.Namespace, "regionserver_ipc", metricsName),
+					strings.Join([]string{c.Namespace, "regionserver ipc", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -70,8 +70,8 @@ func (c *Collect) parseHbaseRegionserverIPC(ch chan<- prometheus.Metric, b inter
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "regionserver_ipc", metricsName),
-					"hbase regionserver ipc "+describeName,
+					prometheus.BuildFQName(c.Namespace, "regionserver_ipc", metricsName),
+					strings.Join([]string{c.Namespace, "regionserver ipc", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

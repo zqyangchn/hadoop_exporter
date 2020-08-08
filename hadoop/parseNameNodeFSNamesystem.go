@@ -1,7 +1,10 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
+
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
@@ -35,8 +38,8 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", metricsName),
-					"hadoop namenode fs name system "+describeName,
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", metricsName),
+					strings.Join([]string{c.Namespace, "namenode fs name system", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -48,7 +51,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "CapacityUsedNonDFS":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "capacity_used_non_dfs"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "capacity_used_non_dfs"),
 					"hadoop namenode fs name system capacity used non dfs",
 					[]string{"role", "host"},
 					nil,
@@ -61,7 +64,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "LowRedundancyECBlockGroups":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "low_redundancy_ec_block_groups"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "low_redundancy_ec_block_groups"),
 					"hadoop namenode fs name system low redundancy ec block groups",
 					[]string{"role", "host"},
 					nil,
@@ -74,7 +77,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "CorruptECBlockGroups":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "corrupt_ec_block_groups"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "corrupt_ec_block_groups"),
 					"hadoop namenode fs name system corrupt ec block groups",
 					[]string{"role", "host"},
 					nil,
@@ -87,7 +90,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "MissingECBlockGroups":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "missing_ec_block_groups"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "missing_ec_block_groups"),
 					"hadoop namenode fs name system missing ec block groups",
 					[]string{"role", "host"},
 					nil,
@@ -100,7 +103,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "BytesInFutureECBlockGroups":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "bytes_in_future_ec_block_groups"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "bytes_in_future_ec_block_groups"),
 					"hadoop namenode fs name system bytes in future ec block groups",
 					[]string{"role", "host"},
 					nil,
@@ -113,7 +116,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "PendingDeletionECBlocks":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "pending_deletion_ec_blocks"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "pending_deletion_ec_blocks"),
 					"hadoop namenode fs name system pending deletion ec blocks",
 					[]string{"role", "host"},
 					nil,
@@ -126,7 +129,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "HighestPriorityLowRedundancyECBlocks":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "highest_priority_low_redundancy_ec_blocks"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "highest_priority_low_redundancy_ec_blocks"),
 					"hadoop namenode fs name system highest priority low redundancy ec blocks",
 					[]string{"role", "host"},
 					nil,
@@ -139,7 +142,7 @@ func (c *Collect) parseNameNodeFSNamesystem(ch chan<- prometheus.Metric, b inter
 		case "TotalECBlockGroups":
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_fs_name_system", "total_ec_block_groups"),
+					prometheus.BuildFQName(c.Namespace, "namenode_fs_name_system", "total_ec_block_groups"),
 					"hadoop namenode fs name system total ec block groups",
 					[]string{"role", "host"},
 					nil,

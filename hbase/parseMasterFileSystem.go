@@ -1,28 +1,27 @@
 package hbase
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-// "Hadoop:service=HBase,name=RegionServer,sub=WAL"
-func (c *Collect) parseHbaseRegionServerWAL(ch chan<- prometheus.Metric, b interface{}) {
+// "Hadoop:service=HBase,name=Master,sub=FileSystem"
+func (c *Collect) parseHbaseMasterFileSystem(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
 		switch key {
 		case
-			"appendCount", "slowAppendCount", "AppendSize_num_ops", "AppendTime_num_ops",
-			"SyncTime_num_ops",
-			"rollRequest",
-			"writtenBytes",
-			"lowReplicaRollRequest":
+			"HlogSplitTime_num_ops", "HlogSplitSize_num_ops",
+			"MetaHlogSplitTime_num_ops", "MetaHlogSplitSize_num_ops":
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "regionserver_wal", metricsName),
-					"hbase regionserver wal "+describeName,
+					prometheus.BuildFQName(c.Namespace, "master_file_system", metricsName),
+					strings.Join([]string{c.Namespace, "master file system", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

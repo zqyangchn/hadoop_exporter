@@ -15,6 +15,7 @@ var log *zap.Logger
 func New(role, uri, namenodeHDFSPort, namenodeServiceRPCPort string, collectMetricsBackGround bool, zapLog *zap.Logger) *Collect {
 	c := new(Collect)
 
+	c.Namespace = "hadoop"
 	c.Role = role
 	c.Uri = uri + "/jmx"
 
@@ -23,7 +24,7 @@ func New(role, uri, namenodeHDFSPort, namenodeServiceRPCPort string, collectMetr
 	c.namenodeHDFSPort = namenodeHDFSPort
 	c.namenodeServiceRPCPort = namenodeServiceRPCPort
 
-	c.hc = &http.Client{
+	c.HC = &http.Client{
 		Transport: &http.Transport{
 			DialContext: (&net.Dialer{
 				Timeout:   5 * time.Second,
@@ -49,10 +50,12 @@ func New(role, uri, namenodeHDFSPort, namenodeServiceRPCPort string, collectMetr
 	}
 
 	if collectMetricsBackGround {
-		c.CollectMetricsBackGround()
+		c.CollectMetricsBackGround(c.parseExporterStatus, c.parseUniqueMetrics)
 	}
 
 	log = zapLog
+	c.Logger = zapLog
+
 	return c
 }
 
@@ -64,7 +67,7 @@ func (c *Collect) InitNameNodeInformation() {
 		panic(err)
 	}
 
-	resp, err := c.hc.Do(req)
+	resp, err := c.HC.Do(req)
 	if resp != nil {
 		defer func() {
 			if err := resp.Body.Close(); err != nil {
@@ -95,7 +98,7 @@ func (c *Collect) InitDataNodeInformation() {
 		panic(err)
 	}
 
-	resp, err := c.hc.Do(req)
+	resp, err := c.HC.Do(req)
 	if resp != nil {
 		defer func() {
 			if err := resp.Body.Close(); err != nil {

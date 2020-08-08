@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -19,8 +21,8 @@ func (c *Collect) parseDataNodeFSDatasetState(ch chan<- prometheus.Metric, b int
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "datanode_fs_dataset_state", metricsName),
-					"hadoop datanode fs dataset state "+describeName,
+					prometheus.BuildFQName(c.Namespace, "datanode_fs_dataset_state", metricsName),
+					strings.Join([]string{c.Namespace, "datanode fs dataset state", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

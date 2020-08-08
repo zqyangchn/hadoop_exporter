@@ -33,8 +33,8 @@ func (c *Collect) parseHbaseMasterIPC(ch chan<- prometheus.Metric, b interface{}
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_ipc", metricsName),
-					"hbase master ipc "+describeName,
+					prometheus.BuildFQName(c.Namespace, "master_ipc", metricsName),
+					strings.Join([]string{c.Namespace, "master ipc", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -53,8 +53,8 @@ func (c *Collect) parseHbaseMasterIPC(ch chan<- prometheus.Metric, b interface{}
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_ipc", metricsName),
-					"hbase master ipc "+describeName,
+					prometheus.BuildFQName(c.Namespace, "master_ipc", metricsName),
+					strings.Join([]string{c.Namespace, "master ipc", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
@@ -77,8 +77,8 @@ func (c *Collect) parseHbaseMasterIPC(ch chan<- prometheus.Metric, b interface{}
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "master_ipc", metricsName),
-					"hbase master ipc "+describeName,
+					prometheus.BuildFQName(c.Namespace, "master_ipc", metricsName),
+					strings.Join([]string{c.Namespace, "master ipc", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),

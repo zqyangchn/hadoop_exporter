@@ -1,6 +1,8 @@
 package hadoop
 
 import (
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/zqyangchn/hadoop_exporter/common"
@@ -16,8 +18,8 @@ func (c *Collect) parseNameNodeRetryCache(ch chan<- prometheus.Metric, b interfa
 			metricsName, describeName := common.ConversionToPrometheusFormat(key)
 			ch <- prometheus.MustNewConstMetric(
 				prometheus.NewDesc(
-					prometheus.BuildFQName(namespace, "namenode_retry_cache", metricsName),
-					"hadoop namenode retry cache "+describeName,
+					prometheus.BuildFQName(c.Namespace, "namenode_retry_cache", metricsName),
+					strings.Join([]string{c.Namespace, "namenode retry cache", describeName}, " "),
 					[]string{"role", "host"},
 					nil,
 				),
