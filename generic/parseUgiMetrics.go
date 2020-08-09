@@ -9,7 +9,7 @@ import (
 )
 
 // "Hadoop:service=HBase,name=UgiMetrics"
-func (c *PublicCollect) ParseUgiMetrics(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseUgiMetrics(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {

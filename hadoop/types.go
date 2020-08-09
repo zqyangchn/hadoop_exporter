@@ -5,7 +5,7 @@ import (
 )
 
 type Collect struct {
-	generic.PublicCollect
+	generic.CollectGenericMetricsForPrometheus
 
 	// hadoop namenode datanode
 	namenodeHDFSPort       string

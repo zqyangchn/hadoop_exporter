@@ -9,7 +9,7 @@ import (
 )
 
 // "Hadoop:service=HBase,name=JvmMetrics"
-func (c *PublicCollect) ParseJvmMetrics(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseJvmMetrics(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {

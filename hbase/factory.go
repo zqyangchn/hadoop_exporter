@@ -40,7 +40,7 @@ func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *C
 	c.initInformation()
 
 	if collectMetricsBackGround {
-		c.CollectMetricsBackGround(c.parseExporterStatus, c.parseUniqueMetrics)
+		c.CollectMetricsBackGround(c)
 	}
 
 	log = zapLog

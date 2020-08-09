@@ -5,5 +5,5 @@ import (
 )
 
 type Collect struct {
-	generic.PublicCollect
+	generic.CollectGenericMetricsForPrometheus
 }

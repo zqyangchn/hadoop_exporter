@@ -1,16 +1,16 @@
 package generic
 
 import (
+	"github.com/prometheus/client_golang/prometheus"
 	"net/http"
+	"sync"
 	"time"
 
 	"go.uber.org/zap"
-
-	"github.com/zqyangchn/hadoop_exporter/prom"
 )
 
-type PublicCollect struct {
-	prom.PrometheusCollect
+type CollectGenericMetricsForPrometheus struct {
+	sync.Mutex
 
 	Role     string
 	Hostname string
@@ -21,6 +21,12 @@ type PublicCollect struct {
 	HC  *http.Client
 
 	CollectInterval    time.Duration
+	CollectMetricsSets []prometheus.Metric
 
 	Logger *zap.Logger
+}
+
+type ParseUniqueMetrics interface {
+	ParseExporterStatus (ch chan<- prometheus.Metric, err error)
+	ParseUniqueMetrics (chan prometheus.Metric, interface{})
 }

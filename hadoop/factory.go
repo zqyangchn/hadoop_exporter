@@ -50,7 +50,7 @@ func New(role, uri, namenodeHDFSPort, namenodeServiceRPCPort string, collectMetr
 	}
 
 	if collectMetricsBackGround {
-		c.CollectMetricsBackGround(c.parseExporterStatus, c.parseUniqueMetrics)
+		c.CollectMetricsBackGround(c)
 	}
 
 	log = zapLog

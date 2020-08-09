@@ -13,31 +13,25 @@ import (
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-func (c *PublicCollect) CollectMetricsBackGround(
-	parseExporterStatus func(ch chan<- prometheus.Metric, err error),
-	parseUniqueMetrics func(chan prometheus.Metric, interface{}),
-) {
+func (c *CollectGenericMetricsForPrometheus) CollectMetricsBackGround(p ParseUniqueMetrics) {
 	go func() {
 		if c.Logger == nil {
 			panic("Logger is nil, please use *zap.logger")
 		}
 
-		if err := c.CollectMetrics(parseExporterStatus, parseUniqueMetrics); err != nil {
+		if err := c.CollectMetrics(p); err != nil {
 			panic(err)
 		}
 
 		for range time.Tick(c.CollectInterval) {
-			if err := c.CollectMetrics(parseExporterStatus, parseUniqueMetrics); err != nil {
+			if err := c.CollectMetrics(p); err != nil {
 				c.Logger.Warn("Collect Metrics Failed. ", zap.Error(err))
 			}
 		}
 	}()
 }
 
-func (c *PublicCollect) CollectMetrics(
-	parseExporterStatus func(ch chan<- prometheus.Metric, err error),
-	parseUniqueMetrics func(chan prometheus.Metric, interface{}),
-) error {
+func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics) error {
 	c.Logger.Debug("Start CollectMetrics ...")
 
 	var wg sync.WaitGroup
@@ -48,13 +42,12 @@ func (c *PublicCollect) CollectMetrics(
 	StopCollectStream := make(chan struct{})
 	defer close(StopCollectStream)
 
+	// update CollectMetricsSets
 	wg.Add(1)
 	go func() {
-		defer func() {
-			wg.Done()
-		}()
-
+		defer wg.Done()
 		set := make([]prometheus.Metric, 0, 0)
+
 		for {
 			select {
 			case m := <-CollectStream:
@@ -74,7 +67,7 @@ func (c *PublicCollect) CollectMetrics(
 
 	req, err := http.NewRequest("GET", c.Uri, nil)
 	if err != nil {
-		parseExporterStatus(CollectStream, err)
+		p.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
@@ -87,27 +80,27 @@ func (c *PublicCollect) CollectMetrics(
 		}()
 	}
 	if err != nil {
-		parseExporterStatus(CollectStream, err)
+		p.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		parseExporterStatus(CollectStream, err)
+		p.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
 	beans := result["beans"].([]interface{})
 	if common.AssertInterfaceIsNil(beans) {
 		err := errors.New("interface beans is nil")
-		parseExporterStatus(CollectStream, err)
+		p.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
 	// parse this exporter status
-	parseExporterStatus(CollectStream, nil)
+	p.ParseExporterStatus(CollectStream, nil)
 
-	c.ParseGenericMetrics(CollectStream, beans, parseUniqueMetrics)
+	c.ParseGenericMetrics(CollectStream, beans, p)
 
 	StopCollectStream <- struct{}{}
 	wg.Wait()
@@ -115,4 +108,11 @@ func (c *PublicCollect) CollectMetrics(
 	c.Logger.Debug("CollectMetrics Completed ...")
 
 	return nil
+}
+
+func (c *CollectGenericMetricsForPrometheus) GetPrometheusMetrics() []prometheus.Metric {
+	defer c.Unlock()
+
+	c.Lock()
+	return c.CollectMetricsSets
 }

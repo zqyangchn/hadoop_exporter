@@ -6,7 +6,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-func (c *Collect) parseUniqueMetrics(CollectStream chan prometheus.Metric, b interface{}) {
+func (c *Collect) ParseUniqueMetrics(CollectStream chan prometheus.Metric, b interface{}) {
 	switch b.(map[string]interface{})["name"] {
 	// 公共
 	case "Hadoop:service=NameNode,name=JvmMetrics",

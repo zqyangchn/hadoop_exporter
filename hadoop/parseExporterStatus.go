@@ -6,7 +6,7 @@ import (
 )
 
 // Generate hadoop_node_status 0: dead 1: active
-func (c *Collect) parseExporterStatus(ch chan<- prometheus.Metric, err error) {
+func (c *Collect) ParseExporterStatus(ch chan<- prometheus.Metric, err error) {
 	if err != nil {
 		ch <- prometheus.MustNewConstMetric(
 			prometheus.NewDesc(

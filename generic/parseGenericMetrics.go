@@ -6,11 +6,8 @@ import (
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-func (c *PublicCollect) ParseGenericMetrics(
-	CollectStream chan prometheus.Metric,
-	beans []interface{},
-	parseUniqueMetrics func(chan prometheus.Metric, interface{}),
-) {
+func (c *CollectGenericMetricsForPrometheus) ParseGenericMetrics(CollectStream chan prometheus.Metric,
+	beans []interface{}, p ParseUniqueMetrics) {
 	for _, b := range beans {
 		if common.AssertInterfaceIsNil(b) {
 			c.Logger.Warn("interface b is nil")
@@ -41,8 +38,8 @@ func (c *PublicCollect) ParseGenericMetrics(
 		case "java.lang:type=ClassLoading":
 			c.ParseClassLoading(CollectStream, b)
 		default:
-			// parse Unique Metrics
-			parseUniqueMetrics(CollectStream, b)
+		// parse Unique Metrics
+			p.ParseUniqueMetrics(CollectStream, b)
 		}
 	}
 }

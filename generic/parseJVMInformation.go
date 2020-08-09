@@ -9,7 +9,7 @@ import (
 )
 
 // "java.lang:type=Threading"
-func (c *PublicCollect) ParseThreading(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseThreading(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -33,7 +33,7 @@ func (c *PublicCollect) ParseThreading(ch chan<- prometheus.Metric, b interface{
 }
 
 // "java.lang:type=OperatingSystem"
-func (c *PublicCollect) ParseOperatingSystem(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseOperatingSystem(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -61,7 +61,7 @@ func (c *PublicCollect) ParseOperatingSystem(ch chan<- prometheus.Metric, b inte
 }
 
 // "java.lang:type=MemoryPool,name=Code Cache"
-func (c *PublicCollect) ParseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -90,7 +90,7 @@ func (c *PublicCollect) ParseMemoryPoolCodeCache(ch chan<- prometheus.Metric, b 
 }
 
 // "java.lang:type=MemoryPool,name=Metaspace"
-func (c *PublicCollect) ParseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -119,7 +119,7 @@ func (c *PublicCollect) ParseMemoryPoolMetaspace(ch chan<- prometheus.Metric, b 
 }
 
 // "java.lang:type=MemoryPool,name=Compressed Class Space"
-func (c *PublicCollect) ParseMemoryPoolCompressedClassSpace(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseMemoryPoolCompressedClassSpace(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -148,7 +148,7 @@ func (c *PublicCollect) ParseMemoryPoolCompressedClassSpace(ch chan<- prometheus
 }
 
 // "java.nio:type=BufferPool,name=direct"
-func (c *PublicCollect) ParseBufferPoolDirect(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseBufferPoolDirect(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -172,7 +172,7 @@ func (c *PublicCollect) ParseBufferPoolDirect(ch chan<- prometheus.Metric, b int
 }
 
 // "java.nio:type=BufferPool,name=mapped"
-func (c *PublicCollect) ParseBufferPoolMapped(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseBufferPoolMapped(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
@@ -196,7 +196,7 @@ func (c *PublicCollect) ParseBufferPoolMapped(ch chan<- prometheus.Metric, b int
 }
 
 // "java.lang:type=ClassLoading"
-func (c *PublicCollect) ParseClassLoading(ch chan<- prometheus.Metric, b interface{}) {
+func (c *CollectGenericMetricsForPrometheus) ParseClassLoading(ch chan<- prometheus.Metric, b interface{}) {
 	beans := b.(map[string]interface{})
 
 	for key, value := range beans {
