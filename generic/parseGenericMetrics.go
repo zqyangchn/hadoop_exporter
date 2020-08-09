@@ -10,12 +10,12 @@ func (c *CollectGenericMetricsForPrometheus) ParseGenericMetrics(CollectStream c
 	beans []interface{}, p ParseUniqueMetrics) {
 	for _, b := range beans {
 		if common.AssertInterfaceIsNil(b) {
-			c.Logger.Warn("interface b is nil")
+			log.Warn("interface b is nil")
 			continue
 		}
 
 		if common.AssertInterfaceIsNil(b.(map[string]interface{})["name"]) {
-			c.Logger.Warn("interface b.(map[string]interface{})[\"name\"] is nil")
+			log.Warn("interface b.(map[string]interface{})[\"name\"] is nil")
 			continue
 		}
 

@@ -15,24 +15,20 @@ import (
 
 func (c *CollectGenericMetricsForPrometheus) CollectMetricsBackGround(p ParseUniqueMetrics) {
 	go func() {
-		if c.Logger == nil {
-			panic("Logger is nil, please use *zap.logger")
-		}
-
 		if err := c.CollectMetrics(p); err != nil {
 			panic(err)
 		}
 
 		for range time.Tick(c.CollectInterval) {
 			if err := c.CollectMetrics(p); err != nil {
-				c.Logger.Warn("Collect Metrics Failed. ", zap.Error(err))
+				log.Warn("Collect Metrics Failed. ", zap.Error(err))
 			}
 		}
 	}()
 }
 
 func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics) error {
-	c.Logger.Debug("Start CollectMetrics ...")
+	log.Debug("Start CollectMetrics ...")
 
 	var wg sync.WaitGroup
 
@@ -56,9 +52,9 @@ func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics
 				c.Lock()
 				c.CollectMetricsSets = set
 				c.Unlock()
-				if c.Logger != nil {
-					c.Logger.Debug("Collect Metrics Information", zap.Int("Count", len(set)))
-				}
+
+				log.Debug("Collect Metrics Information", zap.Int("Count", len(set)))
+
 				return
 			}
 		}
@@ -75,7 +71,7 @@ func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics
 	if resp != nil {
 		defer func() {
 			if err := resp.Body.Close(); err != nil {
-				c.Logger.Warn("resp.Body.Close() failed !", zap.Error(err))
+				log.Warn("resp.Body.Close() failed !", zap.Error(err))
 			}
 		}()
 	}
@@ -105,7 +101,7 @@ func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics
 	StopCollectStream <- struct{}{}
 	wg.Wait()
 
-	c.Logger.Debug("CollectMetrics Completed ...")
+	log.Debug("CollectMetrics Completed ...")
 
 	return nil
 }

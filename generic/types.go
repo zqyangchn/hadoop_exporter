@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 )
 
 type CollectGenericMetricsForPrometheus struct {
@@ -23,7 +22,7 @@ type CollectGenericMetricsForPrometheus struct {
 	CollectInterval    time.Duration
 	CollectMetricsSets []prometheus.Metric
 
-	Logger *zap.Logger
+	//Logger *zap.Logger
 }
 
 type ParseUniqueMetrics interface {

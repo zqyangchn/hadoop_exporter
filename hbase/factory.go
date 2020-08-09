@@ -2,11 +2,10 @@ package hbase
 
 import (
 	"encoding/json"
-	"net"
 	"net/http"
 	"strings"
-	"time"
 
+	"github.com/zqyangchn/hadoop_exporter/generic"
 	"go.uber.org/zap"
 )
 
@@ -14,28 +13,7 @@ var log *zap.Logger
 
 func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *Collect {
 	c := new(Collect)
-
-	c.Namespace = "hbase"
-	c.Role = role
-	c.Uri = uri + "/jmx"
-
-	c.CollectInterval = 5 * time.Second
-
-	c.HC = &http.Client{
-		Transport: &http.Transport{
-			DialContext: (&net.Dialer{
-				Timeout:   5 * time.Second,
-				KeepAlive: 30 * time.Second,
-			}).DialContext,
-
-			MaxIdleConns:          10,
-			IdleConnTimeout:       30 * time.Second,
-			TLSHandshakeTimeout:   10 * time.Second,
-			ExpectContinueTimeout: 5 * time.Second,
-			ResponseHeaderTimeout: 5 * time.Second,
-		},
-		Timeout: 2 * time.Second,
-	}
+	c.CollectGenericMetricsForPrometheus = generic.New(role, uri, "hbase", zapLog)
 
 	c.initInformation()
 
@@ -44,7 +22,6 @@ func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *C
 	}
 
 	log = zapLog
-	c.Logger = zapLog
 
 	return c
 }
