@@ -16,10 +16,6 @@
 		日志输出: stdout|file (default "stdout")
 	-LogOutputFile string
 		日志文件 (default "/var/log/hadoop_exporter/hadoop_exporter.log")
-	-NamenodeHDFSPort string
-		NameNode 运行 HDFS 协议的端口, 此参数只有 role=NameNode 模式下需要指定 (default "8020")
-	-NamenodeServiceRPCPort string
-		HDFS Daemon 可以使用的 service-rpc 地址的可选端口, 此参数只有 role=NameNode 模式下需要指定 (default "8022")
 	-Role string
 		NameNode|DataNode (default "NameNode")
 	-Uri string

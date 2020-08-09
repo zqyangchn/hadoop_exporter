@@ -7,10 +7,6 @@ import (
 type Collect struct {
 	*generic.CollectGenericMetricsForPrometheus
 
-	// hadoop namenode datanode
-	namenodeHDFSPort       string
-	namenodeServiceRPCPort string
-
-	datanodeRpcPort  string
-	datanodeDataPort string
+	rpcActivityForPortDataPort    string
+	rpcActivityForPortServicePort string
 }

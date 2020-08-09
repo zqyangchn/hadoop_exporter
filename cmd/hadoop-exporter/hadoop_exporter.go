@@ -35,9 +35,6 @@ var (
 	Uri  string
 
 	ListenUri string
-
-	NamenodeHDFSPort       string
-	NamenodeServiceRPCPort string
 )
 
 func init() {
@@ -48,11 +45,6 @@ func init() {
 
 	flag.StringVar(&Role, "Role", defaultRole, "NameNode|DataNode")
 	flag.StringVar(&Uri, "Uri", defaultURI, "监控节点 URI")
-
-	flag.StringVar(&NamenodeHDFSPort, "NamenodeHDFSPort", "8020",
-		"NameNode 运行 HDFS 协议的端口, 此参数只有 role=NameNode 模式下需要指定")
-	flag.StringVar(&NamenodeServiceRPCPort, "NamenodeServiceRPCPort", "8022",
-		"HDFS Daemon 可以使用的 service-rpc 地址的可选端口, 此参数只有 role=NameNode 模式下需要指定")
 
 	flag.StringVar(&ListenUri, "ListenUri", "0.0.0.0:18428", "web 监听 ip:port")
 
@@ -66,7 +58,7 @@ func init() {
 
 	// 注册 prometheus Collector 接口结构
 	prometheus.MustRegister(
-		hadoop.New(Role, Uri, NamenodeHDFSPort, NamenodeServiceRPCPort, true, log),
+		hadoop.New(Role, Uri, true, log),
 	)
 
 	log.Info(

@@ -5,26 +5,25 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/zqyangchn/hadoop_exporter/generic"
 	"go.uber.org/zap"
+
+	"github.com/zqyangchn/hadoop_exporter/generic"
 )
 
 var log *zap.Logger
 
-func New(role, uri, namenodeHDFSPort, namenodeServiceRPCPort string, collectMetricsBackGround bool, zapLog *zap.Logger) *Collect {
+func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *Collect {
 	c := new(Collect)
 	c.CollectGenericMetricsForPrometheus = generic.New(role, uri, "hadoop", zapLog)
 
-	c.namenodeHDFSPort = namenodeHDFSPort
-	c.namenodeServiceRPCPort = namenodeServiceRPCPort
-
+	// init hadoop port
 	switch c.Role {
 	case "NameNode":
-		c.InitNameNodeInformation()
+		c.InitNameNodeRPCPort()
 	case "DataNode":
-		c.InitDataNodeInformation()
+		c.InitDataNodeRPCPort()
 	default:
-		panic("Unknown role, Enter the correct role. Usage ./hadoop_exporter -role roleName")
+		panic("hadoop_exporter -Role NameNode|DataNode")
 	}
 
 	if collectMetricsBackGround {
@@ -36,10 +35,39 @@ func New(role, uri, namenodeHDFSPort, namenodeServiceRPCPort string, collectMetr
 	return c
 }
 
-// http://beta-devicegateway-node-01.morefun-internal.com:9870/jmx?qry=Hadoop:service=NameNode,name=NameNodeStatus
-func (c *Collect) InitNameNodeInformation() {
-	uri := c.Uri + "?qry=Hadoop:service=NameNode,name=NameNodeStatus"
-	req, err := http.NewRequest("GET", uri, nil)
+func (c *Collect) InitNameNodeRPCPort() {
+	// http://beta-devicegateway-node-01.morefun-internal.com:9870/jmx
+	// http://beta-devicegateway-node-01.morefun-internal.com:9870/jmx?qry=Hadoop:service=NameNode,name=NameNodeStatus
+
+	nameNodeStatusURI := c.Uri + "?qry=Hadoop:service=NameNode,name=NameNodeStatus"
+	nameNodeStatusRequest, err := http.NewRequest("GET", nameNodeStatusURI, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	nameNodeStatusResponse, err := c.HC.Do(nameNodeStatusRequest)
+	if nameNodeStatusResponse != nil {
+		defer func() {
+			if err := nameNodeStatusResponse.Body.Close(); err != nil {
+				log.Warn(err.Error())
+			}
+		}()
+	}
+	if err != nil {
+		panic(err)
+	}
+
+	var nameNodeStatusResult map[string]interface{}
+	if err := json.NewDecoder(nameNodeStatusResponse.Body).Decode(&nameNodeStatusResult); err != nil {
+		panic(err)
+	}
+
+	c.rpcActivityForPortDataPort = strings.Split(
+		nameNodeStatusResult["beans"].([]interface{})[0].(map[string]interface{})["HostAndPort"].(string),
+		":",
+	)[1]
+
+	req, err := http.NewRequest("GET", c.Uri, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -61,14 +89,23 @@ func (c *Collect) InitNameNodeInformation() {
 		panic(err)
 	}
 
-	hostAndPort := result["beans"].([]interface{})[0].(map[string]interface{})["HostAndPort"].(string)
+	for _, b := range result["beans"].([]interface{}) {
+		beanName := b.(map[string]interface{})["name"].(string)
 
-	c.Hostname = strings.Split(hostAndPort, ":")[0]
-	c.namenodeHDFSPort = strings.Split(hostAndPort, ":")[1]
+		if strings.Contains(beanName, "Hadoop:service=NameNode,name=RpcActivityForPort") {
+			port := strings.TrimPrefix(beanName, "Hadoop:service=NameNode,name=RpcActivityForPort")
+
+			if c.rpcActivityForPortDataPort != port {
+				c.rpcActivityForPortServicePort = port
+				return
+			}
+		}
+	}
 }
 
-// http://beta-devicegateway-node-01.morefun-internal.com:9864/jmx?qry=Hadoop:service=DataNode,name=DataNodeInfo
-func (c *Collect) InitDataNodeInformation() {
+func (c *Collect) InitDataNodeRPCPort() {
+	// http://beta-devicegateway-node-01.morefun-internal.com:9864/jmx?qry=Hadoop:service=DataNode,name=DataNodeInfo
+
 	uri := c.Uri + "?qry=Hadoop:service=DataNode,name=DataNodeInfo"
 	req, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
@@ -94,7 +131,6 @@ func (c *Collect) InitDataNodeInformation() {
 
 	b := result["beans"].([]interface{})[0].(map[string]interface{})
 
-	c.Hostname = b["DatanodeHostname"].(string)
-	c.datanodeRpcPort = b["RpcPort"].(string)
-	c.datanodeDataPort = b["DataPort"].(string)
+	c.rpcActivityForPortDataPort = b["DataPort"].(string)
+	c.rpcActivityForPortServicePort = b["RpcPort"].(string)
 }

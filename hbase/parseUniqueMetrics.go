@@ -45,5 +45,12 @@ func (c *Collect) ParseUniqueMetrics(CollectStream chan prometheus.Metric, b int
 
 	case "Hadoop:service=HBase,name=RegionServer,sub=Replication":
 
+	default:
+		/*
+			log.Debug(
+				"JMX Metrics Not collected completely！",
+				zap.String("MetricsName", b.(map[string]interface{})["name"].(string)))
+
+		*/
 	}
 }
