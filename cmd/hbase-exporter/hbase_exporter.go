@@ -40,7 +40,7 @@ func init() {
 	// 处理命令行参数解析
 	flag.StringVar(&LogLevel, "LogLevel", "debug", "日志级别: debug|info")
 	flag.StringVar(&LogOutput, "LogOutput", "stdout", "日志输出: stdout|file")
-	flag.StringVar(&LogOutputFile, "LogOutputFile", "/var/log/hbase_exporter", "日志文件")
+	flag.StringVar(&LogOutputFile, "LogOutputFile", "/var/log/hbase_exporter/hbase_exporter.log", "日志文件")
 
 	flag.StringVar(&Role, "Role", defaultRole, "HMaster|RegionServer")
 	flag.StringVar(&Uri, "Uri", defaultURI, "监控节点 URI")

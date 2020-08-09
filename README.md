@@ -15,7 +15,7 @@
 	-LogOutput string
 		日志输出: stdout|file (default "stdout")
 	-LogOutputFile string
-		日志文件 (default "/var/log/hadoop_exporter")
+		日志文件 (default "/var/log/hadoop_exporter/hadoop_exporter.log")
 	-NamenodeHDFSPort string
 		NameNode 运行 HDFS 协议的端口, 此参数只有 role=NameNode 模式下需要指定 (default "8020")
 	-NamenodeServiceRPCPort string
@@ -35,7 +35,7 @@
 	-LogOutput string
 		日志输出: stdout|file (default "stdout")
 	-LogOutputFile string
-		日志文件 (default "/var/log/hbase_exporter")
+		日志文件 (default "/var/log/hbase_exporter/hbase_exporter.log")
 	-Role string
 		HMaster|RegionServer (default "RegionServer")
 	-Uri string
