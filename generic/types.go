@@ -1,11 +1,11 @@
 package generic
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
 	"net/http"
 	"sync"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 )
 
@@ -27,6 +27,6 @@ type CollectGenericMetricsForPrometheus struct {
 }
 
 type ParseUniqueMetrics interface {
-	ParseExporterStatus (ch chan<- prometheus.Metric, err error)
-	ParseUniqueMetrics (chan prometheus.Metric, interface{})
+	ParseExporterStatus(ch chan<- prometheus.Metric, err error)
+	ParseUniqueMetrics(chan prometheus.Metric, interface{})
 }

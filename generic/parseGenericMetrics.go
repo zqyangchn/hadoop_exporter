@@ -38,7 +38,7 @@ func (c *CollectGenericMetricsForPrometheus) ParseGenericMetrics(CollectStream c
 		case "java.lang:type=ClassLoading":
 			c.ParseClassLoading(CollectStream, b)
 		default:
-		// parse Unique Metrics
+			// parse Unique Metrics
 			p.ParseUniqueMetrics(CollectStream, b)
 		}
 	}
