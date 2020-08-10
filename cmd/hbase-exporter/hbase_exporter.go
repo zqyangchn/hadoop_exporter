@@ -15,12 +15,12 @@ import (
 
 const (
 	// HMaster default
-	//defaultRole = "HMaster"
-	//defaultURI  = "http://beta-devicegateway-node-02.morefun-internal.com:16010"
+	defaultRole = "HMaster"
+	defaultURI  = "http://beta-devicegateway-node-02.morefun-internal.com:16010"
 
 	// RegionServer default
-	defaultRole = "RegionServer"
-	defaultURI  = "http://beta-devicegateway-node-01.morefun-internal.com:16030"
+	//defaultRole = "RegionServer"
+	//defaultURI  = "http://beta-devicegateway-node-01.morefun-internal.com:16030"
 )
 
 var (
