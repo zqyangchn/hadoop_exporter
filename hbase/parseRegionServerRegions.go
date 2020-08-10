@@ -43,7 +43,7 @@ func (c *Collect) parseHbaseRegionServerRegions(ch chan<- prometheus.Metric, b i
 				ch <- prometheus.MustNewConstMetric(
 					prometheus.NewDesc(
 						prometheus.BuildFQName(c.Namespace, "regionserver_regions", metricsName),
-						strings.Join([]string{c.Namespace, "regionserver_regions", describeName}, " "),
+						strings.Join([]string{c.Namespace, "regionserver regions", describeName}, " "),
 						[]string{"role", "host", "namespace", "table", "region"},
 						nil,
 					),

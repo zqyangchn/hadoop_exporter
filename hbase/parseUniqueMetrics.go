@@ -32,7 +32,7 @@ func (c *Collect) ParseUniqueMetrics(CollectStream chan prometheus.Metric, b int
 	case "Hadoop:service=HBase,name=RegionServer,sub=IO":
 		c.parseHbaseRegionServerIO(CollectStream, b)
 	case "Hadoop:service=HBase,name=RegionServer,sub=TableLatencies":
-	//	c.parseHbaseRegionServerTableLatencies(CollectStream, b)
+		c.parseHbaseRegionServerTableLatencies(CollectStream, b)
 	case "Hadoop:service=HBase,name=RegionServer,sub=WAL":
 		c.parseHbaseRegionServerWAL(CollectStream, b)
 	case "Hadoop:service=HBase,name=RegionServer,sub=Tables":
@@ -42,9 +42,9 @@ func (c *Collect) ParseUniqueMetrics(CollectStream chan prometheus.Metric, b int
 	case "Hadoop:service=HBase,name=RegionServer,sub=IPC":
 		c.parseHbaseRegionserverIPC(CollectStream, b)
 	case "Hadoop:service=HBase,name=RegionServer,sub=Memory":
-
+		c.parseRegionServerMemory(CollectStream, b)
 	case "Hadoop:service=HBase,name=RegionServer,sub=Replication":
-
+		c.parseRegionServerReplication(CollectStream, b)
 	default:
 		/*
 			log.Debug(

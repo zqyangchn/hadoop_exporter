@@ -80,7 +80,6 @@ func (c *Collect) parseHbaseRegionserverIPC(ch chan<- prometheus.Metric, b inter
 				c.Role,
 				c.Hostname,
 			)
-
 		}
 	}
 }
