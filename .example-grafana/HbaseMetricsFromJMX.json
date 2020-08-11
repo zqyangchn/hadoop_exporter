@@ -27,6 +27,12 @@
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
     }
   ],
   "annotations": {
@@ -46,9 +52,237 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1597024747691,
+  "iteration": 1597157154784,
   "links": [],
   "panels": [
+    {
+      "datasource": "${DS_DEV-PROMETHEUS}",
+      "description": "0: 备用\n1: 活动",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 40,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.5",
+      "targets": [
+        {
+          "expr": "hbase_master_server_is_active_master",
+          "format": "time_series",
+          "interval": "",
+          "legendFormat": "{{ host }}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "HMaster 状态",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_DEV-PROMETHEUS}",
+      "decimals": 0,
+      "description": "0: offline\n1: online",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 42,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sideWidth": 400,
+        "sort": "current",
+        "sortDesc": false,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "dataLinks": []
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "hbase_node_status",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node Status",
+      "tooltip": {
+        "msResolution": true,
+        "shared": true,
+        "sort": 2,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:226",
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:227",
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": "${DS_DEV-PROMETHEUS}",
+      "description": "0: 备用\n1: 活动",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 0,
+        "y": 3
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.5",
+      "targets": [
+        {
+          "expr": "hbase_master_balancer_is_active_balancer",
+          "format": "time_series",
+          "interval": "",
+          "legendFormat": "{{ host }}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Balancer 状态",
+      "type": "stat"
+    },
     {
       "aliasColors": {},
       "bars": false,
@@ -71,7 +305,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 0
+        "y": 6
       },
       "hiddenSeries": false,
       "id": 8,
@@ -188,7 +422,7 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 0
+        "y": 6
       },
       "hiddenSeries": false,
       "id": 9,
@@ -341,7 +575,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 6
       },
       "hiddenSeries": false,
       "id": 19,
@@ -452,7 +686,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 6
+        "y": 12
       },
       "hiddenSeries": false,
       "id": 18,
@@ -488,9 +722,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "hbase_os_metrics{subMetrics=\"SystemLoadAverage\"}",
+          "expr": "hbase_os_system_load_average",
           "format": "time_series",
           "instant": false,
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{host}}",
           "refId": "A"
@@ -517,6 +752,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:5923",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -525,6 +761,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:5924",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -560,7 +797,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 6
+        "y": 12
       },
       "hiddenSeries": false,
       "id": 20,
@@ -671,7 +908,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 12
+        "y": 18
       },
       "hiddenSeries": false,
       "id": 30,
@@ -783,7 +1020,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 12
+        "y": 18
       },
       "hiddenSeries": false,
       "id": 2,
@@ -894,7 +1131,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 12
+        "y": 18
       },
       "hiddenSeries": false,
       "id": 21,
@@ -1011,7 +1248,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 22
       },
       "hiddenSeries": false,
       "id": 6,
@@ -1172,7 +1409,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 30
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1290,7 +1527,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 34
       },
       "hiddenSeries": false,
       "id": 29,
@@ -1401,7 +1638,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 38
       },
       "hiddenSeries": false,
       "id": 28,
@@ -1512,7 +1749,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 42
       },
       "hiddenSeries": false,
       "id": 22,
@@ -1629,7 +1866,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 7,
@@ -1740,7 +1977,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 50
       },
       "hiddenSeries": false,
       "id": 23,
@@ -1851,7 +2088,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 54
       },
       "hiddenSeries": false,
       "id": 26,
@@ -1959,7 +2196,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 62
       },
       "hiddenSeries": false,
       "id": 25,
@@ -2067,7 +2304,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 70
       },
       "hiddenSeries": false,
       "id": 34,
@@ -2178,7 +2415,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 74
       },
       "hiddenSeries": false,
       "id": 37,
@@ -2289,7 +2526,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 78
       },
       "hiddenSeries": false,
       "id": 35,
@@ -2400,7 +2637,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 82
       },
       "hiddenSeries": false,
       "id": 36,
@@ -2511,7 +2748,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 86
       },
       "hiddenSeries": false,
       "id": 11,
@@ -2622,7 +2859,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 90
       },
       "hiddenSeries": false,
       "id": 38,
@@ -2733,7 +2970,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 88
+        "y": 94
       },
       "hiddenSeries": false,
       "id": 32,
@@ -2844,7 +3081,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 98
       },
       "hiddenSeries": false,
       "id": 33,
@@ -2955,7 +3192,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 96
+        "y": 102
       },
       "hiddenSeries": false,
       "id": 13,
@@ -3066,7 +3303,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 100
+        "y": 106
       },
       "hiddenSeries": false,
       "id": 10,
@@ -3177,7 +3414,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 104
+        "y": 110
       },
       "hiddenSeries": false,
       "id": 27,
@@ -3288,7 +3525,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 108
+        "y": 114
       },
       "hiddenSeries": false,
       "id": 12,
@@ -3399,7 +3636,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 112
+        "y": 118
       },
       "hiddenSeries": false,
       "id": 3,
@@ -3510,7 +3747,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 116
+        "y": 122
       },
       "hiddenSeries": false,
       "id": 16,
@@ -3623,7 +3860,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 120
+        "y": 126
       },
       "hiddenSeries": false,
       "id": 31,
@@ -3734,7 +3971,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 124
+        "y": 130
       },
       "hiddenSeries": false,
       "id": 14,
@@ -3859,7 +4096,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 128
+        "y": 134
       },
       "hiddenSeries": false,
       "id": 15,
@@ -3969,7 +4206,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 132
+        "y": 138
       },
       "hiddenSeries": false,
       "id": 4,
@@ -4077,7 +4314,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 132
+        "y": 138
       },
       "hiddenSeries": false,
       "id": 17,
@@ -4174,14 +4411,14 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_DEV-PROMETHEUS}",
-        "definition": "label_values(hbase_regionserver_regions, tableName)",
+        "definition": "label_values(hbase_regionserver_regions_read_request_count, table)",
         "hide": 0,
         "includeAll": false,
         "label": "TableName",
         "multi": false,
         "name": "tableName",
         "options": [],
-        "query": "label_values(hbase_regionserver_regions, tableName)",
+        "query": "label_values(hbase_regionserver_regions_read_request_count, table)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -4195,12 +4432,11 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
-      "5s",
       "10s",
       "30s",
       "1m",
@@ -4215,5 +4451,5 @@
   "timezone": "",
   "title": "Hbase Metrics From JMX",
   "uid": "jsjTE8TWk",
-  "version": 46
+  "version": 53
 }
