@@ -27,8 +27,10 @@ func New(role, uri string, collectMetricsBackGround bool, zapLog *zap.Logger) *C
 	}
 
 	if collectMetricsBackGround {
-		c.CollectMetricsBackGround(c)
+		c.CollectMetricsBackGround()
 	}
+
+	c.ParseMetrics = c
 
 	log = zapLog
 

@@ -22,10 +22,10 @@ type CollectGenericMetricsForPrometheus struct {
 	CollectInterval    time.Duration
 	CollectMetricsSets []prometheus.Metric
 
-	//Logger *zap.Logger
+	ParseMetrics ParseMetrics
 }
 
-type ParseUniqueMetrics interface {
+type ParseMetrics interface {
 	ParseExporterStatus(ch chan<- prometheus.Metric, err error)
 	ParseUniqueMetrics(chan prometheus.Metric, interface{})
 }

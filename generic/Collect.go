@@ -13,21 +13,21 @@ import (
 	"github.com/zqyangchn/hadoop_exporter/common"
 )
 
-func (c *CollectGenericMetricsForPrometheus) CollectMetricsBackGround(p ParseUniqueMetrics) {
+func (c *CollectGenericMetricsForPrometheus) CollectMetricsBackGround() {
 	go func() {
-		if err := c.CollectMetrics(p); err != nil {
+		if err := c.CollectMetrics(); err != nil {
 			panic(err)
 		}
 
 		for range time.Tick(c.CollectInterval) {
-			if err := c.CollectMetrics(p); err != nil {
+			if err := c.CollectMetrics(); err != nil {
 				log.Warn("Collect Metrics Failed. ", zap.Error(err))
 			}
 		}
 	}()
 }
 
-func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics) error {
+func (c *CollectGenericMetricsForPrometheus) CollectMetrics() error {
 	log.Debug("Start CollectMetrics ...")
 
 	var wg sync.WaitGroup
@@ -63,7 +63,7 @@ func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics
 
 	req, err := http.NewRequest("GET", c.Uri, nil)
 	if err != nil {
-		p.ParseExporterStatus(CollectStream, err)
+		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
@@ -76,27 +76,27 @@ func (c *CollectGenericMetricsForPrometheus) CollectMetrics(p ParseUniqueMetrics
 		}()
 	}
 	if err != nil {
-		p.ParseExporterStatus(CollectStream, err)
+		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		p.ParseExporterStatus(CollectStream, err)
+		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
 	beans := result["beans"].([]interface{})
 	if common.AssertInterfaceIsNil(beans) {
 		err := errors.New("interface beans is nil")
-		p.ParseExporterStatus(CollectStream, err)
+		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
 		return err
 	}
 
 	// parse this exporter status
-	p.ParseExporterStatus(CollectStream, nil)
+	c.ParseMetrics.ParseExporterStatus(CollectStream, nil)
 
-	c.ParseGenericMetrics(CollectStream, beans, p)
+	c.ParseGenericMetrics(CollectStream, beans)
 
 	StopCollectStream <- struct{}{}
 	wg.Wait()
