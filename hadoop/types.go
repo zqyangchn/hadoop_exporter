@@ -1,7 +1,7 @@
 package hadoop
 
 import (
-	"github.com/zqyangchn/hadoop_exporter/generic"
+	"hadoop_exporter/generic"
 )
 
 type Collect struct {

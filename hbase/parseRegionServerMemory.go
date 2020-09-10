@@ -5,7 +5,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/zqyangchn/hadoop_exporter/common"
+	"hadoop_exporter/common"
 )
 
 // "Hadoop:service=HBase,name=RegionServer,sub=Memory"

@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"github.com/zqyangchn/hadoop_exporter/hbase"
 	"net/http"
 	"time"
 
@@ -10,7 +9,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
 
-	"github.com/zqyangchn/hadoop_exporter/common"
+	"hadoop_exporter/common"
+	"hadoop_exporter/hbase"
 )
 
 const (

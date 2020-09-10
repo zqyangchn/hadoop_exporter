@@ -5,7 +5,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/zqyangchn/hadoop_exporter/common"
+	"hadoop_exporter/common"
 )
 
 func (c *Collect) parseRpcActivityForServiceRPCPort(ch chan<- prometheus.Metric, b interface{}) {

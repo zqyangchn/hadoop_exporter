@@ -3,7 +3,7 @@ package generic
 import (
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/zqyangchn/hadoop_exporter/common"
+	"hadoop_exporter/common"
 )
 
 func (c *CollectGenericMetricsForPrometheus) ParseGenericMetrics(CollectStream chan prometheus.Metric, beans []interface{}) {

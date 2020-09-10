@@ -3,7 +3,7 @@ package hbase
 import (
 	"go.uber.org/zap"
 
-	"github.com/zqyangchn/hadoop_exporter/generic"
+	"hadoop_exporter/generic"
 )
 
 var log *zap.Logger

@@ -1,4 +1,4 @@
-module github.com/zqyangchn/hadoop_exporter
+module hadoop_exporter
 
 go 1.15
 
