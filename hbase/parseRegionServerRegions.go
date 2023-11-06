@@ -19,6 +19,9 @@ func (c *Collect) parseHbaseRegionServerRegions(ch chan<- prometheus.Metric, b i
 	for key, value := range beans {
 		if strings.Contains(key, "Namespace_") {
 			match := re.FindStringSubmatch(key)
+			if len(match) < 5 {
+				continue
+			}
 			nameSpace, tableName, region, metrics := match[1], match[2], match[3], match[4]
 
 			switch metrics {
