@@ -31,7 +31,11 @@ func (c *Collect) parseHbaseRegionServerTableLatencies(ch chan<- prometheus.Metr
 				"deleteTime_num_ops",
 				"incrementTime_num_ops",
 				"putBatchTime_num_ops",
-				"deleteBatchTime_num_ops":
+				"deleteBatchTime_num_ops",
+				"scanTime_95th_percentile",
+				"scanTime_98th_percentile",
+				"scanTime_99th_percentile",
+				"scanTime_99.9th_percentile":
 				metricsName, describeName := common.ConversionToPrometheusFormat(metrics)
 				ch <- prometheus.MustNewConstMetric(
 					prometheus.NewDesc(
