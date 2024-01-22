@@ -3,14 +3,13 @@ package generic
 import (
 	"encoding/json"
 	"errors"
+	"hadoop_exporter/common"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
-
-	"hadoop_exporter/common"
 )
 
 func (c *CollectGenericMetricsForPrometheus) CollectMetricsBackGround() {
@@ -60,42 +59,42 @@ func (c *CollectGenericMetricsForPrometheus) CollectMetrics() error {
 		}
 
 	}()
+	beans, err := func() (beans []interface{}, err error) {
+		req, err := http.NewRequest("GET", c.Uri, nil)
+		if err != nil {
+			return
+		}
 
-	req, err := http.NewRequest("GET", c.Uri, nil)
-	if err != nil {
-		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
-		return err
-	}
+		resp, err := c.HC.Do(req)
+		if resp != nil {
+			defer func() {
+				if err := resp.Body.Close(); err != nil {
+					log.Warn("resp.Body.Close() failed !", zap.Error(err))
+				}
+			}()
+		}
+		if err != nil {
+			return
+		}
 
-	resp, err := c.HC.Do(req)
-	if resp != nil {
-		defer func() {
-			if err := resp.Body.Close(); err != nil {
-				log.Warn("resp.Body.Close() failed !", zap.Error(err))
-			}
-		}()
-	}
-	if err != nil {
-		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
-		return err
-	}
+		var result map[string]interface{}
+		if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
+			return
+		}
 
-	var result map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
-		return err
-	}
-
-	beans := result["beans"].([]interface{})
-	if common.AssertInterfaceIsNil(beans) {
-		err := errors.New("interface beans is nil")
-		c.ParseMetrics.ParseExporterStatus(CollectStream, err)
-		return err
-	}
-
+		beans = result["beans"].([]interface{})
+		if common.AssertInterfaceIsNil(beans) {
+			err = errors.New("interface beans is nil")
+			return
+		}
+		return
+	}()
 	// parse this exporter status
-	c.ParseMetrics.ParseExporterStatus(CollectStream, nil)
-
+	c.ParseMetrics.ParseExporterStatus(CollectStream, err)
+	if err != nil {
+		StopCollectStream <- struct{}{}
+		return err
+	}
 	c.ParseGenericMetrics(CollectStream, beans)
 
 	StopCollectStream <- struct{}{}
